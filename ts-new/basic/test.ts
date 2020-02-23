@@ -1,24 +1,19 @@
 import {add} from "./tsTest/tsInDir";
-
-interface Person {
-    name: string
-}
-
-const teacher: Person = {
-    name: 'Dell Lee'
-}
-
-class testClass {
-    a = 1
-
-    printFun(a: number) {
-        console.log(a)
-    }
-
-    printTest() {
-        console.log('this is a test ts file')
-    }
-}
+import {getPersonAge, getPersonName, setPersonName} from "./tsTest/interfaceTest";
+import {Student} from "./tsTest/class";
 
 const addRes = add({a: 3, b: 6})
 console.log(addRes)
+
+const person = {
+    name: 'slybootlsion',
+    age: 18
+}
+
+getPersonName(person)
+setPersonName(person, 'SlybootsLion')
+getPersonName(person)
+getPersonAge(person)
+
+const stu = new Student()
+stu.say('bey')
