@@ -1,3 +1,5 @@
+import {add} from "./tsTest/tsInDir";
+
 interface Person {
     name: string
 }
@@ -18,7 +20,5 @@ class testClass {
     }
 }
 
-
-export {
-    testClass
-}
+const addRes = add({a: 3, b: 6})
+console.log(addRes)

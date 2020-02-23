@@ -1,4 +1,7 @@
-import {testClass} from "../test";
+const add: ({a, b}: { a: number, b: number }) => number = ({a, b}) => {
+    return a + b;
+}
 
-const tc = new testClass()
-tc.printFun(100)
+export {
+    add
+}
