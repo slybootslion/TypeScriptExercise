@@ -1,0 +1,21 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "description": "ts课程实战，爬虫项目",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./dist/crowller.js",
+    "test": ""
+  },
+  "keywords": [],
+  "author": "slybootslion",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cheerio": "^0.22.16",
+    "@types/superagent": "^4.1.7"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "superagent": "^5.2.2"
+  }
+}
