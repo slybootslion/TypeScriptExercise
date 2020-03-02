@@ -1,7 +1,8 @@
-const superagent = require('superagent');
-const fs = require('fs');
-const path = require('path');
+import fs from "fs";
+import path from "path";
+import superagent from "superagent";
 import DellAnalyzerImpl from "./dellAnalyzer";
+
 
 interface Analyzer {
   analyze: (html: string, filePath: string) => string
@@ -13,7 +14,7 @@ export {Analyzer}
 class Crowller {
   private filePath = path.resolve(__dirname, '../data/course.json')
 
-  constructor(private anylyzer, private url: string) {
+  constructor(private anylyzer: Analyzer, private url: string) {
     this.initSpiderProcess()
   }
 
@@ -32,9 +33,6 @@ class Crowller {
     fs.writeFileSync(this.filePath, str)
   }
 }
+export default Crowller
 
-const secret = 'secretKey'
-const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`
 
-const anylyzer = DellAnalyzerImpl.getInstance()
-new Crowller(anylyzer, url)
