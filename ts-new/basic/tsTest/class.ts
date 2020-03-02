@@ -1,5 +1,5 @@
 abstract class Person {
-    abstract say(str: string)
+    abstract say(str: string): void
 }
 
 class Teacher extends Person {

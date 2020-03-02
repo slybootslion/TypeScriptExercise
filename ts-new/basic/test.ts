@@ -15,5 +15,11 @@ setPersonName(person, 'SlybootsLion')
 getPersonName(person)
 getPersonAge(person)
 
+function foo(name: any) {
+    return name
+}
+
 const stu = new Student()
-stu.say('bey')
+stu.say('bey ！！')
+
+// 这是一条注释，编译之后会被删除
