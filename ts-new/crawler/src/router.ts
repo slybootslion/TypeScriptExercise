@@ -68,17 +68,6 @@ router.post('/login', (req: Request, res: Response) => {
       res.json(getResponseData(false, '密码错误'))
     }
   }
-
-  res.send(`
-  <html>
-    <body>
-      <form action="/login" method="get">
-        <input type="password" name="password">
-        <button>登录</button>
-      </form>
-    </body>
-  </html>
-  `)
 })
 
 router.get('/getData', checkLogin, (req: RequestBody, res: Response) => {
