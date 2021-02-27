@@ -1,3 +1,4 @@
 import simple from '@/demos/simple'
+import demo from '@/demos/demo'
 
-export default [simple]
+export default [demo, simple]
