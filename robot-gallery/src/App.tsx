@@ -4,17 +4,20 @@ import logo from './assets/images/logo.svg'
 import Robot from "./components/Robot";
 import ShoppingCart from "./components/ShoppingCart";
 import React, { useEffect, useState } from "react";
+import RobotDiscount from "./components/RobotDiscount";
 
-interface Props {
-}
-
-interface State {
-  robotGallery: any[]
-}
+// interface Props {
+// }
+//
+// interface State {
+//   robotGallery: any[]
+// }
 
 const App: React.FC = () => {
 
   const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [robotGallery, setRobotGallery] = useState<any>([])
 
   useEffect(() => {
@@ -22,9 +25,12 @@ const App: React.FC = () => {
   }, [count])
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then(list => setRobotGallery(list))
+    setLoading(true)
+    const fetchFn = async () => {
+      const list = await (await fetch('https://jsonplaceholder.typicode.com/users')).json()
+      setRobotGallery(list)
+    }
+    fetchFn().then(() => setLoading(false)).catch(err => setError(err.message))
   }, [])
 
   return (
@@ -36,13 +42,20 @@ const App: React.FC = () => {
       <button onClick={() => setCount(count + 1)}>click</button>
       <span>count: {count}</span>
       <ShoppingCart />
-      <ul className={styles.robotList}>
-        {robotGallery.map(r => <Robot id={r.id} name={r.name} email={r.email} key={r.id} />)}
-      </ul>
+      {error && <div>网站错误： {error}</div>}
+      {
+        !loading ?
+          <ul className={styles.robotList}>
+            {robotGallery.map((r, idx) =>
+              idx % 2 === 0 ?
+                <RobotDiscount id={r.id} name={r.name} email={r.email} key={r.id} /> :
+                <Robot id={r.id} name={r.name} email={r.email} key={r.id} />)}
+          </ul> :
+          <h2>加载中</h2>
+      }
     </div>
   )
 }
-
 /*
 class App extends React.PureComponent<Props, State> {
   constructor (props) {
