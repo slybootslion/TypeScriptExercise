@@ -3,8 +3,15 @@ import styles from "./Header.module.css";
 import { Button, Dropdown, Input, Layout, Menu, Typography } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import logo from '../../assets/images/logo.svg'
+import { useHistory } from 'react-router-dom'
 
 const Header:React.FC = props => {
+  const history = useHistory()
+
+  const reg = () => history.push('register')
+  const signin = () => history.push('signin')
+  const goHome = () => history.push('/')
+
   return <div className={styles['app-header']}>
     <div className={styles['top-header']}>
       <div className={styles.inner}>
@@ -18,14 +25,16 @@ const Header:React.FC = props => {
                            </Menu>
                          }>语言</Dropdown.Button>
         <Button.Group className={styles['button-group']}>
-          <Button>注册</Button>
-          <Button>登录</Button>
+          <Button onClick={reg}>注册</Button>
+          <Button onClick={signin}>登录</Button>
         </Button.Group>
       </div>
     </div>
     <Layout.Header className={styles['main-header']}>
-      <img src={logo} alt="logo" className={styles['App-logo']} />
-      <Typography.Title level={3} className={styles.title}>React网站</Typography.Title>
+      <span onClick={goHome}>
+        <img src={logo} alt="logo" className={styles['App-logo']} />
+        <Typography.Title level={3} className={styles.title}>React网站</Typography.Title>
+      </span>
       <Input.Search placeholder={'请输入'} className={styles['search-input']} />
     </Layout.Header>
     <Menu mode={'horizontal'} className={styles["main-menu"]}>
