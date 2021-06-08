@@ -5,7 +5,6 @@ import styles from './SideMenu.module.css'
 import { GifOutlined } from '@ant-design/icons'
 
 const SideMenu: React.FC = () => {
-  console.log(sideMenuList)
   return <Menu mode='vertical' className={styles['side-menu']}>
     {
       sideMenuList.map((item, index) => {

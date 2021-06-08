@@ -11,7 +11,6 @@ interface PropsType {
 
 const ProductCollection:React.FC<PropsType> = props => {
   const {title, sideImage, products} = props
-  console.log(products[0].touristRoutePictures[0].url)
   return <div className={styles.content}>
     <Divider orientation='left'>{title}</Divider>
     <Row>

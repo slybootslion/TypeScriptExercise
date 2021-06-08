@@ -7,7 +7,11 @@ import sideImage1 from '../../assets/images/sider_2019_12-09.png'
 import sideImage2 from '../../assets/images/sider_2019_02-04.png'
 import sideImage3 from '../../assets/images/sider_2019_02-04-2.png'
 
+import {useTranslation} from 'react-i18next'
+
 const HomePage: React.FC = props => {
+  const {t} = useTranslation()
+
   return <div>
     <Header />
     <div className={styles['page-content']}>
@@ -20,7 +24,7 @@ const HomePage: React.FC = props => {
         </Col>
       </Row>
       <ProductCollection
-        title={<Typography.Title level={3} type="warning">爆款推荐</Typography.Title>}
+        title={<Typography.Title level={3} type="warning">{t('home_page.hot_recommended')}</Typography.Title>}
         sideImage={sideImage1}
         products={productList1} />
       <ProductCollection
