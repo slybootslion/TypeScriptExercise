@@ -12,8 +12,8 @@ import { Dispatch } from "redux";
 
 const mapStateToProps = (state: RootState) => {
   return {
-    language: state.language,
-    languageList: state.languageList
+    language: state.language.language,
+    languageList: state.language.languageList
   }
 }
 
@@ -44,8 +44,8 @@ class HeaderComponent extends React.PureComponent<PropsType> {
   handleStoreState = () => {
     const storeState = store.getState()
     this.setState({
-      language: storeState.language,
-      languageList: storeState.languageList
+      language: storeState.language.language,
+      languageList: storeState.language.languageList
     })
   }
 
