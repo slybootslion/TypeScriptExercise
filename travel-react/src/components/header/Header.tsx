@@ -19,8 +19,8 @@ const Header: React.FC = props => {
   // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
   const {t} = useTranslation()
 
-  const reg = () => history.push('register')
-  const signin = () => history.push('signin')
+  const reg = () => history.push('/register')
+  const signin = () => history.push('/signin')
   const goHome = () => history.push('/')
 
   const menuClickHandler = e => {

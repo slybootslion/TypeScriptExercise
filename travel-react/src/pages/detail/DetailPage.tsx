@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps, useParams } from 'react-router-dom'
-import { Footer, Header, ProductComments } from "../../components";
+import { ProductComments } from "../../components";
 import { Divider, Spin, Typography } from "antd";
 import styles from './DetailPage.module.css'
-import axios from 'axios'
-import { getProductDetail, productDetailSlice } from '../../redux/productDetail/slice'
+import { getProductDetail } from '../../redux/productDetail/slice'
 import { useSelector } from "../../redux/hook";
 import { useDispatch } from "react-redux";
+import { MainLayout } from "../../layouts/mainLayout";
 
 interface MatchParams {
   touristRouteId: string
@@ -57,20 +57,16 @@ const DetailPage: React.FC<RouteComponentProps<MatchParams>> = props => {
     return <div>网站出错：{error}</div>
   }
 
-  return <>
-    <Header />
-    <div className={styles["page-content"]}>
-      <div id="comments" className={styles["product-detail-container"]}>
-        <Divider orientation={"center"}>
-          <Typography.Title level={3}>用户评价</Typography.Title>
-        </Divider>
-        <div style={{margin: 40}}>
-          <ProductComments data={commentData} />
-        </div>
-      </div>
-    </div>
-    <Footer />
-  </>
+  return <MainLayout>
+          <div id="comments" className={styles["product-detail-container"]}>
+            <Divider orientation={"center"}>
+              <Typography.Title level={3}>用户评价</Typography.Title>
+            </Divider>
+            <div style={{margin: 40}}>
+              <ProductComments data={commentData} />
+            </div>
+          </div>
+        </MainLayout>
 }
 
 export { DetailPage }

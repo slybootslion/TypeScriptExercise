@@ -24,7 +24,7 @@ const ProductImage: React.FC<PropsType> = props => {
 
   // const toDetail = id => history.push(`detail/${id}`)
 
-  return <Link to={`detail/${id}`}>
+  return <Link to={`/detail/${id}`}>
     <Image src={imageSrc} width={width} height={height} />
     <div>
       <Typography.Text type='secondary'>{title.slice(0, 25)}</Typography.Text>

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import styles from './HomePage.module.css'
-import { BusinessPartners, Carousel, Footer, Header, ProductCollection, SideMenu } from "../../components";
+import { BusinessPartners, Carousel, ProductCollection, SideMenu } from "../../components";
 import { Col, Row, Spin, Typography } from 'antd'
 import sideImage1 from '../../assets/images/sider_2019_12-09.png'
 import sideImage2 from '../../assets/images/sider_2019_02-04.png'
@@ -9,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useSelector } from "../../redux/hook";
 import { giveMeDataActionCreator } from "../../redux/recommendProducts/recommendProductsActions";
+import { MainLayout } from "../../layouts/mainLayout";
 
 
 const HomePage: React.FC = props => {
@@ -36,33 +36,29 @@ const HomePage: React.FC = props => {
 
   if (error) return <div>网站出错: {error}</div>
 
-  return <div>
-    <Header />
-    <div className={styles['page-content']}>
-      <Row style={{marginTop: 20}}>
-        <Col span={6}>
-          <SideMenu />
-        </Col>
-        <Col span={18}>
-          <Carousel />
-        </Col>
-      </Row>
-      <ProductCollection
-        title={<Typography.Title level={3} type="warning">{t('home_page.hot_recommended')}</Typography.Title>}
-        sideImage={sideImage1}
-        products={productList[0].touristRoutes} />
-      <ProductCollection
-        title={<Typography.Title level={3} type="danger">新品上市</Typography.Title>}
-        sideImage={sideImage2}
-        products={productList[1].touristRoutes} />
-      <ProductCollection
-        title={<Typography.Title level={3} type="success">国内游推荐</Typography.Title>}
-        sideImage={sideImage3}
-        products={productList[2].touristRoutes} />
-      <BusinessPartners />
-    </div>
-    <Footer />
-  </div>
+  return <MainLayout>
+          <Row style={{marginTop: 20}}>
+            <Col span={6}>
+              <SideMenu />
+            </Col>
+            <Col span={18}>
+              <Carousel />
+            </Col>
+          </Row>
+          <ProductCollection
+            title={<Typography.Title level={3} type="warning">{t('home_page.hot_recommended')}</Typography.Title>}
+            sideImage={sideImage1}
+            products={productList[0].touristRoutes} />
+          <ProductCollection
+            title={<Typography.Title level={3} type="danger">新品上市</Typography.Title>}
+            sideImage={sideImage2}
+            products={productList[1].touristRoutes} />
+          <ProductCollection
+            title={<Typography.Title level={3} type="success">国内游推荐</Typography.Title>}
+            sideImage={sideImage3}
+            products={productList[2].touristRoutes} />
+          <BusinessPartners />
+        </MainLayout>
 }
 
 export {
