@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import { Button, Dropdown, Input, Layout, Menu, Typography } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
@@ -8,20 +8,41 @@ import { useSelector } from "../../redux/hook";
 import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next'
 import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
+import jwtDecode, {JwtPayload as DefaultJwtPayload} from "jwt-decode";
+import { logout } from "../../redux/user/slice";
 // import { Dispatch } from "redux";
 // import { LanguageActionTypes } from "../../redux/language/languageActions";
+
+interface JwtPayload extends DefaultJwtPayload {
+  username: string
+}
 
 const Header: React.FC = props => {
   const history = useHistory()
   const language = useSelector(state => state.language.language)
   const languageList = useSelector(state => state.language.languageList)
+  const token = useSelector(state => state.user.token)
   const dispatch = useDispatch()
+  const [username, setUsername] = useState('')
   // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
   const {t} = useTranslation()
+
+  useEffect(() =>{
+    if (token) {
+      const t = jwtDecode<JwtPayload>(token)
+      setUsername(t.username)
+    }
+  }, [token])
+
 
   const reg = () => history.push('/register')
   const signin = () => history.push('/signin')
   const goHome = () => history.push('/')
+
+  const signOut = () => {
+    dispatch(logout(token))
+    history.push('/')
+  }
 
   const menuClickHandler = e => {
     const {key} = e
@@ -41,10 +62,18 @@ const Header: React.FC = props => {
                              <Menu.Item key={'new'}>{t('header.add_new_language')}</Menu.Item>
                            </Menu>
                          }>{language === 'zh' ? '中文' : 'English'}</Dropdown.Button>
-        <Button.Group className={styles['button-group']}>
-          <Button onClick={reg}>注册</Button>
-          <Button onClick={signin}>登录</Button>
-        </Button.Group>
+        {
+          token ?
+            <Button.Group className={styles['button-group']}>
+              <span>{t('header.welcome')}<Typography.Text strong>{username}</Typography.Text></span>
+              <Button>{t('header.shoppingCart')}</Button>
+              <Button onClick={signOut}>{t('header.signOut')}</Button>
+            </Button.Group> :
+            <Button.Group className={styles['button-group']}>
+              <Button onClick={reg}>注册</Button>
+              <Button onClick={signin}>登录</Button>
+            </Button.Group>
+        }
       </div>
     </div>
     <Layout.Header className={styles['main-header']}>

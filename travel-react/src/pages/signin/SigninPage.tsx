@@ -1,9 +1,10 @@
 import React from 'react'
 import { UserLayout } from "../../layouts/userLayout";
+import { SigninForm } from "./SigninForm";
 
 const SignInPage: React.FC = props => {
   return <UserLayout>
-          <div>登录页面</div>
+          <SigninForm />
          </UserLayout>
 }
 

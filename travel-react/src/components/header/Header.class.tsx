@@ -4,7 +4,7 @@ import { Button, Dropdown, Input, Layout, Menu, Typography } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import logo from '../../assets/images/logo.svg'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import store, { RootState } from '../../redux/store'
+import rootStore, { RootState } from '../../redux/store'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
 import { connect } from 'react-redux'
@@ -42,7 +42,7 @@ class HeaderComponent extends React.PureComponent<PropsType> {
   }
 
   handleStoreState = () => {
-    const storeState = store.getState()
+    const storeState = rootStore.store.getState()
     this.setState({
       language: storeState.language.language,
       languageList: storeState.language.languageList
