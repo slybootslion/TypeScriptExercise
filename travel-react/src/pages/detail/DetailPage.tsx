@@ -4,6 +4,9 @@ import { Footer, Header, ProductComments } from "../../components";
 import { Divider, Spin, Typography } from "antd";
 import styles from './DetailPage.module.css'
 import axios from 'axios'
+import { getProductDetail, productDetailSlice } from '../../redux/productDetail/slice'
+import { useSelector } from "../../redux/hook";
+import { useDispatch } from "react-redux";
 
 interface MatchParams {
   touristRouteId: string
@@ -11,11 +14,21 @@ interface MatchParams {
 
 const DetailPage: React.FC<RouteComponentProps<MatchParams>> = props => {
   const {touristRouteId} = useParams<MatchParams>()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<null | string>(null)
-  const [commentData, setCommentData] = useState<any>(null)
+  // const [loading, setLoading] = useState(true)
+  // const [error, setError] = useState<null | string>(null)
+  // const [commentData, setCommentData] = useState<any>(null)
+
+  const loading = useSelector(state => state.productDetail.loading)
+  const error = useSelector(state => state.productDetail.error)
+  const commentData = useSelector(state => state.productDetail.data)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(getProductDetail(touristRouteId))
+  }, [])
+
+  /*useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`/travel/touristRoutes/${touristRouteId}`)
@@ -27,7 +40,7 @@ const DetailPage: React.FC<RouteComponentProps<MatchParams>> = props => {
       }
     }
     fetchData()
-  }, [])
+  }, [])*/
 
   if (loading) {
     return <Spin size={'large'}
