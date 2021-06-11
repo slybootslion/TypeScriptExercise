@@ -22,6 +22,8 @@ const Header: React.FC = props => {
   const language = useSelector(state => state.language.language)
   const languageList = useSelector(state => state.language.languageList)
   const token = useSelector(state => state.user.token)
+  const shoppingCartItems = useSelector(state => state.shoppingCart.items)
+  const shoppingCartLoading = useSelector(state => state.shoppingCart.loading)
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
@@ -38,7 +40,7 @@ const Header: React.FC = props => {
   const reg = () => history.push('/register')
   const signin = () => history.push('/signin')
   const goHome = () => history.push('/')
-
+  const toShoppingPage = () => history.push('/shoppingCart')
   const signOut = () => {
     dispatch(logout(token))
     history.push('/')
@@ -66,7 +68,10 @@ const Header: React.FC = props => {
           token ?
             <Button.Group className={styles['button-group']}>
               <span>{t('header.welcome')}<Typography.Text strong>{username}</Typography.Text></span>
-              <Button>{t('header.shoppingCart')}</Button>
+              <Button loading={shoppingCartLoading}
+                      onClick={toShoppingPage}>
+                {t('header.shoppingCart')}({shoppingCartItems.length})
+              </Button>
               <Button onClick={signOut}>{t('header.signOut')}</Button>
             </Button.Group> :
             <Button.Group className={styles['button-group']}>
