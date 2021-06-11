@@ -13,7 +13,7 @@ import axios from 'axios'
 
 axios.defaults.headers.lucode = '30b4da17-afcc-4090-9e63-48af76404a60'
 // axios.defaults.baseURL = 'http://localhost:39200'
-axios.defaults.baseURL = 'http://f.sketchmac.com'
+axios.defaults.baseURL = 'https://f.sketchmac.com'
 
 ReactDOM.render(
   <React.StrictMode>
