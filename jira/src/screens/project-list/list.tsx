@@ -1,6 +1,20 @@
 import React from 'react'
+import { User } from './search-panel'
 
-export const List = props => {
+interface Project {
+  id: string,
+  name: string,
+  personId: string,
+  organization: string,
+  pin: boolean
+}
+
+interface PropsType {
+  list: Project[],
+  users: User[]
+}
+
+export const List:React.FC<PropsType> = props => {
   const { list, users } = props
   return (
     <table>

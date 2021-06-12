@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { SearchPanel } from './search-panel'
 import { List } from './list'
-import * as qs from 'qs'
-import { clearObj, useDebounce, useMount } from '../../utils/index'
+import { stringify } from 'qs'
+import { clearObj, useDebounce, useMount } from '../../utils'
 
 const baseURL = process.env.REACT_APP_API_URL
 
@@ -15,7 +15,7 @@ export const ProjectListScreen = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await (await fetch(`${baseURL}/projects?${qs.stringify(clearObj(debounceParam))}`)).json()
+      const res = await (await fetch(`${baseURL}/projects?${stringify(clearObj(debounceParam))}`)).json()
       setList(res)
     }
     getData()
