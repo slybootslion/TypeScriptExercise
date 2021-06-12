@@ -31,6 +31,7 @@ module.exports = {
   },
   globals: {
     'JSX': true,
+    'TSX': true,
     'React': true,
     'NodeJS': true,
     'Promise': true,
@@ -41,5 +42,6 @@ module.exports = {
     'quotes': [1, 'single'],
     'arrow-parens': ['error', 'as-needed'],
     'semi': [1, 'never'],
+    'react/prop-types': 0, //防止在react组件定义中缺少props验证，tsx里用不着，但是jsx里不定义会报错
   },
 }
