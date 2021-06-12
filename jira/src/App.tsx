@@ -6,7 +6,7 @@ function App () {
 
   const post = async () => {
     const data = {username: 'xiaoming'}
-    const res = await fetch('http://localhost:3001/users', {
+    const res = await fetch('http://localhost:39200/users', {
       method:'POST',
       body:JSON.stringify(data),
       headers: {
