@@ -5,10 +5,11 @@ export interface User {
   name: string;
   email?: string;
   title?: string;
-  organization?: string
+  organization?: string,
+  token: string,
 }
 
-interface PropsType {
+export interface PropsType {
   param: {name: string, personId: string};
   setParam: (param: PropsType['param']) =>void;
   users: User[]

@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value
 
-export const clearObj = (obj: object) => {
+export const clearObj = (obj: { [key: string]: unknown }) => {
+  if (!obj) return {}
   const result = {...obj}
   Object.keys(result).forEach(key => {
-    // @ts-ignore
     const value = result[key]
-    // @ts-ignore
     if (isFalsy(value)) delete result[key]
   })
   return result
@@ -19,8 +18,8 @@ export const useMount = (callback: () => void) => {
   }, [])
 }
 
-export const useDebounce = (value: unknown, delay = 2000): any => {
-  const [dValue, setDValue] = useState(value)
+export const useDebounce = <V> (value: V, delay = 2000) => {
+  const [dValue, setDValue] = useState<V>(value)
   useEffect(() => {
     const timer = setTimeout(() => setDValue(value), delay)
     return () => clearTimeout(timer)

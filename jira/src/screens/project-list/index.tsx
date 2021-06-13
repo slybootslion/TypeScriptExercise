@@ -3,13 +3,15 @@ import { SearchPanel } from './search-panel'
 import { List } from './list'
 import { stringify } from 'qs'
 import { clearObj, useDebounce, useMount } from '../../utils'
+import { PropsType as SearchPropsType } from './search-panel'
+import { PropsType as ListPropsType } from './list'
 
 const baseURL = process.env.REACT_APP_API_URL
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useState({name: '', personId: ''})
-  const [list, setList] = useState([])
-  const [users, setUsers] = useState([])
+  const [param, setParam] = useState<SearchPropsType['param']>({name: '', personId: ''})
+  const [list, setList] = useState<ListPropsType['list']>([])
+  const [users, setUsers] = useState<ListPropsType['users']>([])
 
   const debounceParam = useDebounce(param)
 

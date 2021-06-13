@@ -9,7 +9,7 @@ interface Project {
   pin: boolean
 }
 
-interface PropsType {
+export interface PropsType {
   list: Project[],
   users: User[]
 }
