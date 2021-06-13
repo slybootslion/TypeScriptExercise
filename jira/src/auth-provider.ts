@@ -23,7 +23,6 @@ export const login = async (params: { username: string, password: string }) => {
 }
 
 export const register = async (params: { username: string, password: string }) => {
-  console.log(params)
   const user = await (await fetch(`${baseURL}/register`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
