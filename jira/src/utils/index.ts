@@ -13,9 +13,7 @@ export const clearObj = (obj: { [key: string]: unknown }) => {
 }
 
 export const useMount = (callback: () => void) => {
-  useEffect(() => {
-    callback()
-  }, [])
+  useEffect(() => callback(), [callback])
 }
 
 export const useDebounce = <V> (value: V, delay = 2000) => {

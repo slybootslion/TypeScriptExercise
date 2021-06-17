@@ -1,13 +1,9 @@
 import { User } from './screens/project-list/search-panel'
-import { loadDevTools } from "jira-dev-tool";
 
 const localStorageKey = '__auth_provider_token__'
 const baseURL = process.env.REACT_APP_API_URL
-
 export const getToken = localStorage.getItem(localStorageKey)
-
 export const setToken = (token: string) => localStorage.setItem(localStorageKey, token)
-
 export const handleUserResponse = ({user}: { user: User }) => {
   setToken(user.token || '')
   return user

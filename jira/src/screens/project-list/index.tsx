@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { SearchPanel } from './search-panel'
-import { List } from './list'
-import { stringify } from 'qs'
+import { PropsType as SearchPropsType, SearchPanel } from './search-panel'
+import { List, PropsType as ListPropsType } from './list'
 import { clearObj, useDebounce, useMount } from '../../utils'
-import { PropsType as SearchPropsType } from './search-panel'
-import { PropsType as ListPropsType } from './list'
+import { useHttp } from '../../utils/http'
 
 const baseURL = process.env.REACT_APP_API_URL
 
@@ -12,19 +10,21 @@ export const ProjectListScreen = () => {
   const [param, setParam] = useState<SearchPropsType['param']>({name: '', personId: ''})
   const [list, setList] = useState<ListPropsType['list']>([])
   const [users, setUsers] = useState<ListPropsType['users']>([])
+  const client = useHttp()
 
   const debounceParam = useDebounce(param)
 
+
   useEffect(() => {
     const getData = async () => {
-      const res = await (await fetch(`${baseURL}/projects?${stringify(clearObj(debounceParam))}`)).json()
+      const res = await client('projects', {data: clearObj(debounceParam)})
       setList(res)
     }
     getData()
-  }, [debounceParam])
+  }, [client, debounceParam])
 
   useMount(async () => {
-    const res = await (await fetch(`${baseURL}/users`)).json()
+    const res = await client('/users')
     setUsers(res)
   })
 

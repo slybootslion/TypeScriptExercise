@@ -9,7 +9,9 @@ export const UnauthenticatedApp: React.FC = () => {
   const toggleIsRegister = () => setIsRegister(!isRegister)
 
   return <>
-    isRegister ? <Register /> : <Login />
+    {
+      isRegister ? <Register /> : <Login />
+    }
     <button onClick={toggleIsRegister}>切换到{isRegister ? '登录' : '注册'}</button>
   </>
 }
