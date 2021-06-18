@@ -14,17 +14,16 @@ export const ProjectListScreen = () => {
 
   const debounceParam = useDebounce(param)
 
-
   useEffect(() => {
     const getData = async () => {
-      const res = await client('projects', {data: clearObj(debounceParam)})
+      const res = await client('/projects', {data: clearObj(debounceParam)})
       setList(res)
     }
     getData()
   }, [client, debounceParam])
 
   useMount(async () => {
-    const res = await client('/users')
+    const res = await client('/users', {data: {}})
     setUsers(res)
   })
 

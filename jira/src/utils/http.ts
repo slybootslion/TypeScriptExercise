@@ -10,11 +10,10 @@ interface Config extends RequestInit {
 }
 
 export const http = (url: string, {data, token, headers, ...opts}: Config = {}) => {
-
   const config = {
     method: 'GET',
-    header: {
-      Authorization: token ? `bearer ${token}` : '',
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
       'Content-Type': data ? 'application/json' : '',
     },
     ...opts,
@@ -27,13 +26,12 @@ export const http = (url: string, {data, token, headers, ...opts}: Config = {}) 
   }
 
   return fetch(`${baseURL}${url}`, config).then(async res => {
-    /*if (res.status === 401) {
+    if (res.status === 401) {
       await logout()
       window.location.reload()
       return Promise.reject({message: '身份异常，重新登录'})
-    }*/
+    }
     const data = await res.json()
-    console.log(data)
     if (res.ok) {
       return data
     } else {
@@ -44,5 +42,5 @@ export const http = (url: string, {data, token, headers, ...opts}: Config = {}) 
 
 export const useHttp = () => {
   const {user} = useAuth()
-  return (...[url, config]: Parameters<typeof http>) => http(url, {...config, token: user?.token})
+  return (...[url, opts]: Parameters<typeof http>) => http(url, {...opts, token: user?.token})
 }
