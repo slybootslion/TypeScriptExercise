@@ -27,5 +27,5 @@ export const cleanObject = (object?: { [key: string]: unknown }) => {
 }
 
 export const useMount = (cb: () => void) => {
-  useEffect(() => cb(), [])
+  useEffect(() => cb(), [cb])
 }

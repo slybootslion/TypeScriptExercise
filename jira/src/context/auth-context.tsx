@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { AuthForm, getToken } from "../auth-provider";
-import { login as apLogin, register as apRegister, logout as apLogout } from 'auth-provider'
+import { login as apLogin, logout as apLogout, register as apRegister } from 'auth-provider'
 import { User } from "../type";
 import { http } from "../utils/http";
 import { useMount } from "../utils";
