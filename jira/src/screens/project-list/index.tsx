@@ -3,6 +3,7 @@ import { cleanObject, useDebounce, useMount } from "../../utils";
 import { useHttp } from "../../utils/http";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
+import styled from "@emotion/styled";
 
 export const ProjectListScreen = () => {
   const [users, setUsers] = useState([])
@@ -19,14 +20,18 @@ export const ProjectListScreen = () => {
 
   useEffect(() => {
     client('projects', {data: cleanObject(debouncedParam)}).then(setList)
-  }, [debouncedParam, client])
+  }, [debouncedParam])
 
   useMount(() => {
     client('users').then(setUsers)
   })
 
-  return <div>
+  return <Container>
     <SearchPanel users={users} param={param} setParam={setParam} />
     <List users={users} list={list} />
-  </div>
+  </Container>
 }
+
+const Container = styled.div`
+  padding: 3.2rem;
+`

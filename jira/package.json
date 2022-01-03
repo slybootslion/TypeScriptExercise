@@ -12,10 +12,11 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "antd": "^4.18.2",
-    "jira-dev-tool": "^1.7.61",
+    "dayjs": "^1.10.7",
     "qs": "^6.10.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-query": "^3.34.7",
     "react-scripts": "5.0.0",
     "typescript": "^4.5.4",
     "web-vitals": "^2.1.2"
@@ -45,6 +46,9 @@
     ]
   },
   "devDependencies": {
-    "craco-less": "^2.0.0"
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "craco-less": "^2.0.0",
+    "jira-dev-tool": "^1.6.59"
   }
 }

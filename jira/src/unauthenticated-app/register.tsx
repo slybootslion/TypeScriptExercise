@@ -1,11 +1,12 @@
-import React, { FormEvent } from 'react'
+import React from 'react'
 import { useAuth } from "../context/auth-context";
 import { AuthForm } from "../auth-provider";
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
+import { LongButton } from "./index";
 
 export const RegisterScreen = () => {
 
-  const {register, user} = useAuth()
+  const {register} = useAuth()
 
   const handleSubmit = async (values: AuthForm) => await register(values)
 
@@ -17,7 +18,7 @@ export const RegisterScreen = () => {
       <Input placeholder='密码' type="password" id={'password'} />
     </Form.Item>
     <Form.Item>
-      <Button type="primary" htmlType='submit'>注册</Button>
+      <LongButton type="primary" htmlType='submit'>注册</LongButton>
     </Form.Item>
   </Form>
 }

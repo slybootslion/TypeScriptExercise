@@ -11,8 +11,7 @@ export const useDebounce = <V> (value: V, delay?: number) => {
   return debouncedValue
 }
 
-export const isVoid = (value: unknown) =>
-  value === undefined || value === null || value === ""
+export const isVoid = (value: unknown) => value == null || value === ''
 
 export const cleanObject = (object?: { [key: string]: unknown }) => {
   if (!object) {
@@ -27,5 +26,5 @@ export const cleanObject = (object?: { [key: string]: unknown }) => {
 }
 
 export const useMount = (cb: () => void) => {
-  useEffect(() => cb(), [cb])
+  useEffect(() => cb(), [])
 }
