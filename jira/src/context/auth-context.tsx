@@ -1,9 +1,11 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { AuthForm, getToken } from "../auth-provider";
 import { login as apLogin, logout as apLogout, register as apRegister } from 'auth-provider'
 import { User } from "../type";
 import { http } from "../utils/http";
 import { useMount } from "../utils";
+import { useAsync } from "../utils/use-async";
+import { FullPageError, FullPageLoading } from "../components/lib";
 
 export type ChildrenNodeType = {
   children: ReactNode
@@ -29,13 +31,17 @@ const AuthContext = React.createContext <{
 } | undefined>(undefined)
 
 export const AuthProvider = ({children}: ChildrenNodeType) => {
-  const [user, setUser] = useState<User | null>(null)
+  const {data: user, error, isLoading, isIdle, isError, run, setData: setUser} = useAsync<User | null>()
 
   const login = (form: AuthForm) => apLogin(form).then(setUser)
   const register = (form: AuthForm) => apRegister(form).then(setUser)
   const logout = () => apLogout().then(() => setUser(null))
 
-  useMount(() => bootstrapUser().then(setUser))
+  useMount(() => run(bootstrapUser()))
+
+  if (isLoading || isIdle) return <FullPageLoading />
+
+  if (isError) return <FullPageError err={error} />
 
   return <AuthContext.Provider children={children} value={{user, login, register, logout}} />
 }

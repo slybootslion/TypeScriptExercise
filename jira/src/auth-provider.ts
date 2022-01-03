@@ -14,6 +14,7 @@ export const handleUserResponse = ({user}: { user: User }) => {
 export type AuthForm = {
   username: string
   password: string
+  cpassword?: string
 }
 
 export const login = (data: AuthForm) => {
