@@ -28,3 +28,5 @@ export const cleanObject = (object?: { [key: string]: unknown }) => {
 export const useMount = (cb: () => void) => {
   useEffect(() => cb(), [])
 }
+
+export const resetRoute = () => window.location.href = window.location.origin

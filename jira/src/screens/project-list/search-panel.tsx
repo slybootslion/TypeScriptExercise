@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "../../type";
-import { Form, Select } from "antd";
+import { Form, Input, Select } from "antd";
 
 interface SearchPanelProps {
   users: User[]
@@ -15,7 +15,7 @@ export const SearchPanel = ({users, param, setParam}: SearchPanelProps) => {
 
   return <Form layout='inline' style={{marginBottom: '2rem'}}>
     <Form.Item>
-      <input placeholder='项目名' type="text" onChange={e => setParam({
+      <Input placeholder='项目名' type="text" onChange={e => setParam({
         ...param,
         name: e.target.value
       })} />
@@ -27,7 +27,7 @@ export const SearchPanel = ({users, param, setParam}: SearchPanelProps) => {
       })}>
         <Select.Option value="">负责人</Select.Option>
         {
-          users.map(user => <Select.Option value={user.id} key={user.id}>{user.name}</Select.Option>)
+          users.map(user => <Select.Option value={String(user.id)} key={user.id}>{user.name}</Select.Option>)
         }
       </Select>
     </Form.Item>
