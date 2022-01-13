@@ -12,3 +12,16 @@ export const useProject = (param?: Partial<Project>) => {
   }, [param])
   return result
 }
+
+export const useHandleHttpProject = () => {
+  const {run, ...result} = useAsync()
+  const client = useHttp()
+  const handler = (params: Partial<Project>, method: string) => {
+    return run(client(`projects/${params.id}`, {
+      data: params,
+      method
+    }))
+  }
+
+  return {handler, ...result}
+}

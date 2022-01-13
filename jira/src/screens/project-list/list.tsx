@@ -4,14 +4,26 @@ import { Table, TableProps } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { Pin } from "../../components/pin";
+import { useHandleHttpProject } from "../../utils/project";
 
 interface ListProps extends TableProps<Project> {
   users: User[]
 }
 
 export const List = ({users, ...props}: ListProps) => {
+  const {handler: mutate} = useHandleHttpProject()
+
+  const handlerPin = (id: number) => (pin: boolean) => mutate({id, pin}, 'PATCH')
 
   const tableColumns: ColumnsType<Project> = [
+    {
+      title: <Pin checked={true} disabled={true} />,
+      render (value, project) {
+        return <Pin checked={project.pin}
+                    onCheckedChange={handlerPin(project.id)} />
+      }
+    },
     {
       title: '名称',
       render (value, project) {
