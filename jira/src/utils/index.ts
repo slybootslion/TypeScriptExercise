@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useDebounce = <V> (value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value)
@@ -30,3 +30,16 @@ export const useMount = (cb: () => void) => {
 }
 
 export const resetRoute = () => window.location.href = window.location.origin
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  })
+
+  return mountedRef
+}
