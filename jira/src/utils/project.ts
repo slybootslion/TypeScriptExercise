@@ -9,7 +9,7 @@ export const useProject = (param?: Partial<Project>) => {
   const client = useHttp()
   useEffect(() => {
     run(client('projects', {data: cleanObject(param)}))
-  }, [param])
+  }, [client, param, run])
   return result
 }
 

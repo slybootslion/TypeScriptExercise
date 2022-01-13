@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { stat } from "fs";
 import { useMountedRef } from "./index";
 
@@ -26,25 +26,26 @@ export const useAsync = <D> (initialState?: State<D>, initialConfig?: typeof def
 
   const config = {...defaultConfig, ...initialConfig}
   const mountedRef = useMountedRef()
-  const setData = (data: D) => setState({
+  const setData = useCallback((data: D) => setState({
     data,
     error: null,
     stat: 'success'
-  })
+  }), [])
 
-  const setError = (error: Error) => setState({
+  const setError = useCallback((error: Error) => setState({
     data: null,
     error,
     stat: 'error'
-  })
+  }), [])
 
-  const run = (promise: Promise<D>) => {
+  const run = useCallback((promise: Promise<D>) => {
     if (!promise || !promise.then) throw new Error('需传入promise类型数据')
 
-    setState({...state, stat: 'loading'})
+    setState(prevState => ({...prevState, stat: 'loading'}))
     return promise
       .then(data => {
         if (mountedRef.current) setData(data)
+        // setData(data)
         return data
       })
       .catch(err => {
@@ -52,7 +53,7 @@ export const useAsync = <D> (initialState?: State<D>, initialConfig?: typeof def
         if (config.throwOnError) return Promise.reject(err)
         return err
       })
-  }
+  }, [config.throwOnError, mountedRef, setData, setError])
 
   return {
     isIdle: state.stat === 'idle',
