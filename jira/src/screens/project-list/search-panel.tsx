@@ -1,6 +1,6 @@
 import React from "react";
 import { Project, User } from "../../type";
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import { UserSelect } from "../../components/user-select";
 
 interface SearchPanelProps {

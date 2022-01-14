@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { stat } from "fs";
+import { useCallback, useReducer } from "react";
 import { useMountedRef } from "./index";
 
 interface State<D> {
@@ -18,33 +17,48 @@ const defaultConfig = {
   throwOnError: false
 }
 
+const useSafeDispatch = <T> (dispatch: (...args: T[]) => void) => {
+  const mountedRef = useMountedRef()
+  return useCallback((...args: T[]) => mountedRef.current ? dispatch(...args) : void 0, [dispatch, mountedRef])
+}
+
 export const useAsync = <D> (initialState?: State<D>, initialConfig?: typeof defaultConfig) => {
+  const config = {...defaultConfig, ...initialConfig}
+
+  /*
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
     ...initialState
   })
+  */
 
-  const config = {...defaultConfig, ...initialConfig}
-  const mountedRef = useMountedRef()
-  const setData = useCallback((data: D) => setState({
+  const [state, dispatch] = useReducer((state: State<D>, action: Partial<State<D>>) => ({
+    ...state, ...action
+  }), {
+    ...defaultInitialState,
+    ...initialState
+  })
+
+  const safeDispatch = useSafeDispatch(dispatch)
+  const setData = useCallback((data: D) => safeDispatch({
     data,
     error: null,
     stat: 'success'
-  }), [])
+  }), [safeDispatch])
 
-  const setError = useCallback((error: Error) => setState({
+  const setError = useCallback((error: Error) => safeDispatch({
     data: null,
     error,
     stat: 'error'
-  }), [])
+  }), [safeDispatch])
 
   const run = useCallback((promise: Promise<D>) => {
     if (!promise || !promise.then) throw new Error('需传入promise类型数据')
 
-    setState(prevState => ({...prevState, stat: 'loading'}))
+    safeDispatch({stat: 'loading'})
     return promise
       .then(data => {
-        if (mountedRef.current) setData(data)
+        setData(data)
         // setData(data)
         return data
       })
@@ -53,7 +67,7 @@ export const useAsync = <D> (initialState?: State<D>, initialConfig?: typeof def
         if (config.throwOnError) return Promise.reject(err)
         return err
       })
-  }, [config.throwOnError, mountedRef, setData, setError])
+  }, [config.throwOnError, safeDispatch, setData, setError])
 
   return {
     isIdle: state.stat === 'idle',
