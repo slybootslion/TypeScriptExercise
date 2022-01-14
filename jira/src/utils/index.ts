@@ -26,6 +26,7 @@ export const cleanObject = (object?: { [key: string]: unknown }) => {
 }
 
 export const useMount = (cb: () => void) => {
+  // eslint-disable-next-line
   useEffect(() => cb(), [])
 }
 

@@ -1,11 +1,12 @@
 import React from 'react'
 import { Project, User } from "../../type";
-import { Table, TableProps } from "antd";
+import { Dropdown, Menu, Table, TableProps } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { Pin } from "../../components/pin";
 import { useHandleHttpProject } from "../../utils/project";
+import { ButtonNoPadding } from "../../components/lib";
 
 interface ListProps extends TableProps<Project> {
   users: User[]
@@ -41,7 +42,22 @@ export const List = ({users, ...props}: ListProps) => {
       title: '创建时间', render (value, project) {
         return <span>{project.created ? dayjs(project.created).format('YYYY-MM-DD HH:mm:ss') : '无'}</span>
       }
-    }
+    },
+    {
+      render () {
+        return <Dropdown overlay={<Menu>
+          <Menu.Item key='edit'>
+            <ButtonNoPadding type='link'
+                             onClick={() => {
+                             }}>
+              编辑
+            </ButtonNoPadding>
+          </Menu.Item>
+        </Menu>}>
+          <ButtonNoPadding type='link'>...</ButtonNoPadding>
+        </Dropdown>
+      }
+    },
   ]
 
   return <Table pagination={false} columns={tableColumns} rowKey='id' {...props} />
