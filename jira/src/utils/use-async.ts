@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { stat } from "fs";
 import { useMountedRef } from "./index";
 
 interface State<D> {
