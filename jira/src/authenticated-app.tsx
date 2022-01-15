@@ -13,19 +13,19 @@ import { ProjectModal } from "./components/project-modal";
 import { ProjectPopover } from "./components/project-popover";
 
 export const AuthenticatedApp = () => {
-
+  // const [projectModalOpen, setProjectModalOpen] = useState(false)
   return <Container>
-    <PageHeader />
-    <Main>
-      <BrowserRouter>
+    <BrowserRouter>
+      <PageHeader />
+      <Main>
         <Routes>
           <Route path={'/projects'} element={<ProjectListScreen />} />
           <Route path='/projects/:projectId/*' element={<ProjectScreen />} />
           <Route path='/' element={<Navigate to='/projects' />} />
         </Routes>
-      </BrowserRouter>
-    </Main>
-    <ProjectModal />
+      </Main>
+      <ProjectModal />
+    </BrowserRouter>
   </Container>
 }
 

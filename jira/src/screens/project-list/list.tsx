@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Pin } from "../../components/pin";
 import { useHandleHttpProject } from "../../utils/project";
 import { ButtonNoPadding } from "../../components/lib";
+import { useProjectModal } from "./utils";
 
 interface ListProps extends TableProps<Project> {
   users: User[]
@@ -16,7 +17,7 @@ export const List = ({users, ...props}: ListProps) => {
   const {handler: mutate} = useHandleHttpProject()
 
   const handlerPin = (id: number) => (pin: boolean) => mutate({id, pin}, 'PATCH')
-
+  const {open} = useProjectModal()
   const tableColumns: ColumnsType<Project> = [
     {
       title: <Pin checked={true} disabled={true} />,
@@ -48,8 +49,7 @@ export const List = ({users, ...props}: ListProps) => {
         return <Dropdown overlay={<Menu>
           <Menu.Item key='edit'>
             <ButtonNoPadding type='link'
-                             onClick={() => {
-                             }}>
+                             onClick={open}>
               编辑
             </ButtonNoPadding>
           </Menu.Item>

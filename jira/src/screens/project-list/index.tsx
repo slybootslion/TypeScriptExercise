@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { Button, Divider, Typography } from "antd";
 import { useProject } from "../../utils/project";
 import { useUser } from "../../utils/user";
-import { useProjectSearchParams } from "./utils";
+import { useProjectModal, useProjectSearchParams } from "./utils";
 import { Row } from "../../components/lib";
 
 export const ProjectListScreen = () => {
@@ -14,12 +14,11 @@ export const ProjectListScreen = () => {
   const [param, setParam] = useProjectSearchParams()
   const {isLoading: loading, error, data: list} = useProject(useDebounce(param, 500))
   const {data: users} = useUser()
-
+  const {open} = useProjectModal()
   return <Container>
     <Row between={true}>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
-      <Button onClick={() => {
-      }}>创建项目</Button>
+      <Button onClick={open}>创建项目</Button>
     </Row>
     <Divider />
     {error ? <Typography.Text type='danger'>{error.message}</Typography.Text> : null}
