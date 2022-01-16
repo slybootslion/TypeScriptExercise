@@ -1,24 +1,29 @@
 import { Project } from "../type";
 import { cleanObject } from "./index";
 import { useHttp } from "./http";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryKey, useMutation, useQuery } from "react-query";
+import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp()
   return useQuery<Project[]>(['projects', param], () => client('projects', {data: cleanObject(param)}))
 }
 
-export const useHandleHttpProject = (method: string) => {
+export const useHandleHttpProject = (method: string, queryKey: QueryKey) => {
   const client = useHttp()
-  const queryClient = useQueryClient()
+  let useConfigType = useAddConfig
+  if (method === 'PATCH') {
+    useConfigType = useEditConfig
+  }
+  if (method === 'DELETE') {
+    useConfigType = useDeleteConfig
+  }
   return useMutation(
     (params: Partial<Project>) => {
-      const url = method === 'PATCH' ? `projects/${params.id}` : `projects`
+      const url = method === 'POST' ? `projects` : `projects/${params.id}`
       return client(url, {method, data: params})
     },
-    {
-      onSuccess: () => queryClient.invalidateQueries('projects')
-    }
+    useConfigType(queryKey)
   )
 }
 

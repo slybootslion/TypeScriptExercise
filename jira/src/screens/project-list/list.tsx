@@ -1,24 +1,22 @@
 import React from 'react'
 import { Project, User } from "../../type";
-import { Dropdown, Menu, Table, TableProps } from "antd";
+import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { Pin } from "../../components/pin";
 import { useHandleHttpProject } from "../../utils/project";
 import { ButtonNoPadding } from "../../components/lib";
-import { useProjectModal } from "./utils";
+import { useProjectModal, useProjectQueryKey } from "./utils";
 
 interface ListProps extends TableProps<Project> {
   users: User[]
 }
 
 export const List = ({users, ...props}: ListProps) => {
-  const {mutate} = useHandleHttpProject('PATCH')
+  const {mutate} = useHandleHttpProject('PATCH', useProjectQueryKey())
 
   const handlerPin = (id: number) => (pin: boolean) => mutate({id, pin})
-  const {startEdit} = useProjectModal()
-  const editProject = (id: number) => () => startEdit(id)
   const tableColumns: ColumnsType<Project> = [
     {
       title: <Pin checked={true} disabled={true} />,
@@ -47,24 +45,41 @@ export const List = ({users, ...props}: ListProps) => {
     },
     {
       render (value, project) {
-        return <Dropdown overlay={<Menu>
-          <Menu.Item key='edit'>
-            <ButtonNoPadding type='link' onClick={editProject(project.id)}>
-              编辑
-            </ButtonNoPadding>
-          </Menu.Item>
-          <Menu.Item key='delete'>
-            <ButtonNoPadding type='link'
-                             onClick={() => {
-                             }}> 删除
-            </ButtonNoPadding>
-          </Menu.Item>
-        </Menu>}>
-          <ButtonNoPadding type='link'>...</ButtonNoPadding>
-        </Dropdown>
+        return <More project={project} />
       }
     },
   ]
 
   return <Table pagination={false} columns={tableColumns} rowKey='id' {...props} />
+}
+
+
+const More = ({project}: { project: Project }) => {
+  const {startEdit} = useProjectModal()
+  const editProject = (id: number) => () => startEdit(id)
+  const {mutate} = useHandleHttpProject('DELETE', useProjectQueryKey())
+  const deleteProject = (id: number) => () => {
+    Modal.confirm({
+      title: '确定删除这个项目吗？',
+      content: '点击确定删除',
+      okText: '确定',
+      onOk () {
+        mutate({id})
+      }
+    })
+  }
+  return <Dropdown overlay={<Menu>
+    <Menu.Item key='edit'>
+      <ButtonNoPadding type='link' onClick={editProject(project.id)}>
+        编辑
+      </ButtonNoPadding>
+    </Menu.Item>
+    <Menu.Item key='delete'>
+      <ButtonNoPadding type='link'
+                       onClick={deleteProject(project.id)}> 删除
+      </ButtonNoPadding>
+    </Menu.Item>
+  </Menu>}>
+    <ButtonNoPadding type='link'>...</ButtonNoPadding>
+  </Dropdown>
 }

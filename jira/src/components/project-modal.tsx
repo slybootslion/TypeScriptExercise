@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, Drawer, Form, Input, Spin } from "antd";
-import { useProjectModal } from "../screens/project-list/utils";
+import { useProjectModal, useProjectQueryKey } from "../screens/project-list/utils";
 import { UserSelect } from "./user-select";
 import { useHandleHttpProject } from "../utils/project";
 import { useForm } from "antd/lib/form/Form";
@@ -14,7 +14,7 @@ export const ProjectModal = () => {
     title = '编辑项目'
     method = 'PATCH'
   }
-  const {mutateAsync, error, isLoading: mutateLoading} = useHandleHttpProject(method)
+  const {mutateAsync, error, isLoading: mutateLoading} = useHandleHttpProject(method, useProjectQueryKey())
   const [form] = useForm()
   const onFinish = (values: any) => {
     mutateAsync({...editingProject, ...values}).then(() => {
