@@ -1,27 +1,34 @@
-import { useAsync } from "./use-async";
 import { Project } from "../type";
-import { useEffect } from "react";
 import { cleanObject } from "./index";
 import { useHttp } from "./http";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-export const useProject = (param?: Partial<Project>) => {
-  const {run, ...result} = useAsync<Project[]>()
+export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp()
-  useEffect(() => {
-    run(client('projects', {data: cleanObject(param)}))
-  }, [client, param, run])
-  return result
+  return useQuery<Project[]>(['projects', param], () => client('projects', {data: cleanObject(param)}))
 }
 
-export const useHandleHttpProject = () => {
-  const {run, ...result} = useAsync()
+export const useHandleHttpProject = (method: string) => {
   const client = useHttp()
-  const handler = (params: Partial<Project>, method: string) => {
-    return run(client(`projects/${params.id}`, {
-      data: params,
-      method
-    }))
-  }
+  const queryClient = useQueryClient()
+  return useMutation(
+    (params: Partial<Project>) => {
+      const url = method === 'PATCH' ? `projects/${params.id}` : `projects`
+      return client(url, {method, data: params})
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('projects')
+    }
+  )
+}
 
-  return {handler, ...result}
+export const useProject = (id?: number) => {
+  const client = useHttp()
+  return useQuery<Project>(
+    ['project', {id}],
+    () => client(`projects/${id}`),
+    {
+      enabled: !!id
+    }
+  )
 }

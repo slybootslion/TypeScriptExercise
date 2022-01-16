@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import left from 'assets/left.svg'
 import right from 'assets/right.svg'
 import logo from 'assets/logo.svg'
+import { ErrorBox } from "../components/lib";
 
 export const UnauthenticatedApp = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -17,7 +18,7 @@ export const UnauthenticatedApp = () => {
     <Background />
     <ShadowCard>
       <Title>{isLogin ? '请登录' : '请注册'}</Title>
-      {err ? <Typography.Text type='danger'>{err.message}</Typography.Text> : null}
+      <ErrorBox error={{error: err}}/>
       {isLogin ? <LoginScreen onError={setErr} /> : <RegisterScreen onError={setErr} />}
       <Button onClick={() => setIsLogin(!isLogin)}>切换到{isLogin ? '注册' : '登录'}</Button>
     </ShadowCard>

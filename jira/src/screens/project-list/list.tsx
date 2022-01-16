@@ -14,10 +14,11 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List = ({users, ...props}: ListProps) => {
-  const {handler: mutate} = useHandleHttpProject()
+  const {mutate} = useHandleHttpProject('PATCH')
 
-  const handlerPin = (id: number) => (pin: boolean) => mutate({id, pin}, 'PATCH')
-  const {open} = useProjectModal()
+  const handlerPin = (id: number) => (pin: boolean) => mutate({id, pin})
+  const {startEdit} = useProjectModal()
+  const editProject = (id: number) => () => startEdit(id)
   const tableColumns: ColumnsType<Project> = [
     {
       title: <Pin checked={true} disabled={true} />,
@@ -45,12 +46,17 @@ export const List = ({users, ...props}: ListProps) => {
       }
     },
     {
-      render () {
+      render (value, project) {
         return <Dropdown overlay={<Menu>
           <Menu.Item key='edit'>
-            <ButtonNoPadding type='link'
-                             onClick={open}>
+            <ButtonNoPadding type='link' onClick={editProject(project.id)}>
               编辑
+            </ButtonNoPadding>
+          </Menu.Item>
+          <Menu.Item key='delete'>
+            <ButtonNoPadding type='link'
+                             onClick={() => {
+                             }}> 删除
             </ButtonNoPadding>
           </Menu.Item>
         </Menu>}>
