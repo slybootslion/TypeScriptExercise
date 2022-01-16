@@ -6,6 +6,7 @@ import { http } from "../utils/http";
 import { useMount } from "../utils";
 import { useAsync } from "../utils/use-async";
 import { FullPageError, FullPageLoading } from "../components/lib";
+import { useQueryClient } from "react-query";
 
 export type ChildrenNodeType = {
   children: ReactNode
@@ -30,12 +31,19 @@ const AuthContext = React.createContext <{
   logout: () => Promise<void>
 } | undefined>(undefined)
 
+
 export const AuthProvider = ({children}: ChildrenNodeType) => {
   const {data: user, error, isLoading, isIdle, isError, run, setData: setUser} = useAsync<User | null>()
 
+
   const login = (form: AuthForm) => apLogin(form).then(setUser)
   const register = (form: AuthForm) => apRegister(form).then(setUser)
-  const logout = () => apLogout().then(() => setUser(null))
+
+  const queryClient = useQueryClient()
+  const logout = () => apLogout().then(() => {
+    setUser(null)
+    queryClient.clear()
+  })
 
   useMount(() => run(bootstrapUser()))
 
