@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -18,3 +18,15 @@ loadServer(() => ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
+  const oldTitle = useRef(document.title).current
+  useEffect(() => {
+    document.title = title
+  }, [title])
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) document.title = oldTitle
+    }
+  }, [keepOnUnmount, oldTitle])
+}

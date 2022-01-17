@@ -17,13 +17,14 @@ export const AuthenticatedApp = () => {
   return <Container>
     <BrowserRouter>
       <PageHeader />
-      <Main>
-        <Routes>
+      <Routes>
           <Route path={'/projects'} element={<ProjectListScreen />} />
           <Route path='/projects/:projectId/*' element={<ProjectScreen />} />
           <Route path='/' element={<Navigate to='/projects' />} />
         </Routes>
-      </Main>
+      {/*<Main>*/}
+      {/*  */}
+      {/*</Main>*/}
       <ProjectModal />
     </BrowserRouter>
   </Container>
@@ -57,6 +58,7 @@ const User = () => {
 }
 
 const Container = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
 `
@@ -73,5 +75,6 @@ const HeaderRight = styled.div``
 const HeaderLeft = styled(Row)``
 
 const Main = styled.main`
-  grid-area: main;
+  flex: 1;
+  overflow: hidden;
 `
