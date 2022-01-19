@@ -1,7 +1,7 @@
 import { Kanban } from "../../type/kanban";
 import React from 'react'
 import { useTasks } from "../../utils/task";
-import { useKanbanQueryKey, useTasksSearchParams } from "./utils";
+import { useKanbanQueryKey, useTasksModal, useTasksSearchParams } from "./utils";
 import { useTaskTypes } from "../../utils/task-type";
 import taskIcon from '../../assets/task.svg'
 import bugIcon from '../../assets/bug.svg'
@@ -10,6 +10,8 @@ import { Row } from "../../components/lib";
 import { Button, Card, Dropdown, Menu, Modal } from "antd";
 import { useDeleteKanban } from "../../utils/kanban";
 import { CreateTask } from "./create-task";
+import { Task } from "../../type/task";
+import { Mark } from "../../components/mark";
 
 export const KanbanColumn = ({kanban}: { kanban: Kanban }) => {
   const {data: allTasks} = useTasks(useTasksSearchParams())
@@ -20,13 +22,21 @@ export const KanbanColumn = ({kanban}: { kanban: Kanban }) => {
       <More kanban={kanban} />
     </Row>
     <TasksContainer>
-      {tasks?.map(task => <Card style={{marginBottom: '0.5rem'}} key={task.name}>
-        <div>{task.name}</div>
-        <TaskTypeIcon id={task.id} />
-      </Card>)}
+      {tasks?.map(task => <TaskCard task={task} key={task.name} />)}
       <CreateTask kanbanId={kanban.id} />
     </TasksContainer>
   </Container>
+}
+
+const TaskCard = ({task}: { task: Task }) => {
+  const {startEdit} = useTasksModal()
+  const {name: keyword} = useTasksSearchParams()
+  return <Card onClick={() => startEdit(task.id)}
+               style={{marginBottom: '0.5rem', cursor: 'pointer'}}>
+    {/*<div>{task.name}</div>*/}
+    <Mark name={task.name} keyword={keyword} />
+    <TaskTypeIcon id={task.typeId} />
+  </Card>
 }
 
 const More = ({kanban}: { kanban: Kanban }) => {
@@ -35,8 +45,8 @@ const More = ({kanban}: { kanban: Kanban }) => {
     okText: '确定',
     cancelText: '取消',
     title: '确定删除看板吗',
-    onOk () {
-      mutateAsync({id: kanban.id})
+    async onOk () {
+      await mutateAsync({id: kanban.id})
     }
   }
 

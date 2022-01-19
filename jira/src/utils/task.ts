@@ -1,8 +1,8 @@
 import { Task } from "../type/task";
 import { useHttp } from "./http";
 import { QueryKey, useMutation, useQuery } from "react-query";
-import { Kanban } from "../type/kanban";
-import { useAddConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
+import { Project } from "../type";
 
 export const useTasks = (param?: Partial<Task>) => {
   const client = useHttp()
@@ -18,4 +18,31 @@ export const useAddTask = (queryKey: QueryKey) => {
     }),
     useAddConfig(queryKey)
   )
+}
+
+export const useTask = (id?: number) => {
+  const client = useHttp()
+  return useQuery<Project>(
+    ['task', {id}],
+    () => client(`tasks/${id}`),
+    {enabled: Boolean(id)}
+  )
+}
+
+export const useEditTask = (queryKey: QueryKey) => {
+  const client = useHttp()
+  return useMutation(
+    (params: Partial<Task>) => {
+      return client(`tasks/${params.id}`, {
+        method: 'PATCH',
+        data: params
+      })
+    },
+    useEditConfig(queryKey)
+  )
+}
+
+export const useDeleteTask = (queryKey: QueryKey) => {
+  const client = useHttp()
+  return useMutation(({id}: { id: number }) => client(`tasks/${id}`, {method: 'DELETE'}), useDeleteConfig(queryKey))
 }
